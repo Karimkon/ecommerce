@@ -26,8 +26,8 @@ class CategoryModel extends Model
         return self::select('category.*', 'users.name as created_by_name')
                      ->join('users', 'users.id', '=', 'category.created_by')
                      ->where('category.is_delete', '=', 0)
-                     ->orderby('category.id', 'desc') 
-                     ->get();  
+                     ->orderby('category.id', 'desc')
+                     ->get();
     }
 
     static public function getRecordActive()
@@ -36,8 +36,8 @@ class CategoryModel extends Model
                      ->join('users', 'users.id', '=', 'category.created_by')
                      ->where('category.is_delete', '=', 0)
                      ->where('category.status', '=', 0)
-                     ->orderby('category.name', 'asc') 
-                     ->get();  
+                     ->orderby('category.name', 'asc')
+                     ->get();
     }
 
     static public function getRecordMenu()
@@ -46,7 +46,7 @@ class CategoryModel extends Model
                      ->join('users', 'users.id', '=', 'category.created_by')
                      ->where('category.is_delete', '=', 0)
                      ->where('category.status', '=', 0)
-                     ->get();  
+                     ->get();
     }
 
     public function getSubCategory()

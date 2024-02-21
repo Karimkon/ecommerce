@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CategoryModel;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -14,12 +14,12 @@ class CategoryController extends Controller
         $data['getRecord'] = CategoryModel::getRecord();
         $data['header_title'] = "Category List";
         return view('admin.category.list', $data);
-    } 
+    }
     public function add()
     {
         $data['header_title'] = "Add New Category";
         return view('admin.category.add', $data);
-    } 
+    }
 
     public function insert(Request $request)
     {
@@ -37,7 +37,7 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect('admin/category/list')->with('success', "Category Succesfully created.");
-    } 
+    }
 
     public function edit($id)
     {
@@ -51,8 +51,8 @@ class CategoryController extends Controller
         {
             abort(404);
         }
-        
-    } 
+
+    }
 
     public function update($id, Request $request)
     {
@@ -69,7 +69,7 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect('admin/category/list')->with('success', "Category Succesfully Updated.");
-    } 
+    }
 
     public function delete($id)
     {
@@ -78,5 +78,5 @@ class CategoryController extends Controller
         $user->save();
 
         return redirect('admin/category/list')->with('success', "Category Succesfully deleted.");
-    } 
+    }
 }

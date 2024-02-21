@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BrandModel;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 
 class BrandController extends Controller
@@ -15,13 +15,20 @@ class BrandController extends Controller
         $data['getRecord'] = BrandModel::getRecord();
         $data['header_title'] = "Brand List";
         return view('admin.brand.list', $data);
-    } 
+    }
+
+    public function map()
+    {
+
+        $data['header_title'] = "Map ";
+        return view('admin.track.hom', $data);
+    }
 
     public function add()
     {
         $data['header_title'] = "Add New Brand";
         return view('admin.brand.add', $data);
-    } 
+    }
 
     public function insert(Request $request)
     {
@@ -39,7 +46,7 @@ class BrandController extends Controller
         $brand->save();
 
         return redirect('admin/brand/list')->with('success', "Brand Succesfully created.");
-    } 
+    }
 
     public function edit($id)
     {
@@ -53,8 +60,8 @@ class BrandController extends Controller
         {
             abort(404);
         }
-        
-    } 
+
+    }
 
     public function update($id, Request $request)
     {
@@ -71,7 +78,7 @@ class BrandController extends Controller
         $brand->save();
 
         return redirect('admin/brand/list')->with('success', "Brand Succesfully Updated.");
-    } 
+    }
 
     public function delete($id)
     {
@@ -80,5 +87,5 @@ class BrandController extends Controller
         $user->save();
 
         return redirect('admin/brand/list')->with('success', "Brand Succesfully deleted.");
-    } 
+    }
 }

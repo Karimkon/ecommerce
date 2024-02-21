@@ -47,7 +47,7 @@
                 </button>
 
                 <a href="{{ url('') }}" class="logo">
-                    <img src="assets/images/logo.png" width="105" height="25">
+                    <img src="{{url('assets/images/logo.png')}}" width="105" height="25">
                 </a>
 
                 <nav class="main-nav">
@@ -72,8 +72,8 @@
                                                     <a href="{{ url($value_h_c->slug) }}" class="menu-title">{{ $value_h_c->name }}</a>
                                                     <ul>
                                                         @foreach ($value_h_c->getSubCategory as $value_h_sub)
-                                                            
-                                                        
+
+
                                                         <li><a href="{{ url($value_h_c->slug.'/'.$value_h_sub->slug) }}">{{ $value_h_sub->name }}</a></li>
 
                                                         @endforeach
@@ -84,11 +84,11 @@
                                         </div>
                                     </div>
 
-                                    
+
                                 </div>
                             </div>
                         </li>
-                    
+
                     </ul>
                 </nav>
             </div>
@@ -99,7 +99,9 @@
                     <form action="{{ url('search') }}" method="get">
                         <div class="header-search-wrapper">
                             <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
+                            <input type="search" class="form-control" name="q" id="q" placeholder="Search in..."
+                            value="{{ !empty(request()->get('q')) ? request()->get('q') : ''   }}"
+                            required>
                         </div>
                     </form>
                 </div>

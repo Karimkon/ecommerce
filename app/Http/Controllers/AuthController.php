@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;   
-use Hash;
+use Illuminate\Support\Facades\Auth;
+
 class AuthController extends Controller
 {
     public function login_admin()
@@ -15,7 +15,7 @@ class AuthController extends Controller
         }
         return view('admin.auth.login');
     }
-    
+
     public function auth_login_admin(Request $request)
     {
         $remember = !empty($request->remember) ? true : false;

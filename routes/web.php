@@ -38,7 +38,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 
 
-    //Category 
+    //Category
     Route::get('admin/category/list', [CategoryController::class, 'list']);
     Route::get('admin/category/add', [CategoryController::class, 'add']);
     Route::post('admin/category/add', [CategoryController::class, 'insert']);
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'admin'], function () {
     //Ajax
     Route::post('admin/get_sub_category/', [SubCategoryController::class, 'get_sub_category']);
 
-    //Brand 
+    //Brand
     Route::get('admin/brand/list', [BrandController::class, 'list']);
     Route::get('admin/brand/add', [BrandController::class, 'add']);
     Route::post('admin/brand/add', [BrandController::class, 'insert']);
@@ -64,7 +64,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/brand/edit/{id}', [BrandController::class, 'update']);
     Route::get('admin/brand/delete/{id}', [BrandController::class, 'delete']);
 
-     //Color 
+     //Color
      Route::get('admin/color/list', [ColorController::class, 'list']);
      Route::get('admin/color/add', [ColorController::class, 'add']);
      Route::post('admin/color/add', [ColorController::class, 'insert']);
@@ -83,13 +83,14 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/product/image_delete/{id}', [ProductController::class, 'image_delete']);
     Route::post('admin/product_image_sortable', [ProductController::class, 'product_image_sortable']);
 
-    
-    
+    //Maps
+    Route::get('admin/track/hom', [BrandController::class, 'map']);
 
-    
+
 });
 
 Route::get('/', [HomeController::class, 'home']);
+Route::get('search', [ProductFront::class, 'getProductSearch']);
 Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProductAjax']);
 Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getCategory']);
 

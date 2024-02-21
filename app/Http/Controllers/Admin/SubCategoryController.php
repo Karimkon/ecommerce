@@ -74,7 +74,7 @@ class SubCategoryController extends Controller
         $subcategory->meta_keywords = trim($request->meta_keywords);
         $subcategory->save();
 
-        return redirect('admin/subcategory/list')->with('success', "Sub Category Succesfully Updated.");
+        return redirect('admin/sub_category/list')->with('success', "Sub Category Succesfully Updated.");
     }
 
     public function delete($id)

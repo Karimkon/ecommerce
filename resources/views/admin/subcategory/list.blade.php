@@ -37,10 +37,7 @@
                   <label>Name</label>
                   <input type="text" class="form-control" name="name" value="{{ Request::get('name') }}" placeholder="Enter Name">
                 </div>
-                <div class="form-group col-md-3">
-                  <label>Email address</label>
-                  <input type="text" class="form-control" name="email" value="{{ Request::get('email') }}" placeholder="Enter email">
-                </div>
+                
                 <div class="form-group col-md-3">
                   <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
                   <a href="{{ url('admin/sub_category/list') }}" style="margin-top: 30px" class="btn btn-success">Reset</a>

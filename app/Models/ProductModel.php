@@ -15,13 +15,19 @@ class ProductModel extends Model
     static public function getSingle($id){
         return self::find($id);
     }
-    static public function getRecord()
+    static public function getRecord(Request $request)
     {
-        return self::select('product.*', 'users.name as created_by_name')
+        $query =  self::select('product.*', 'users.name as created_by_name')
                      ->join('users', 'users.id', '=', 'product.created_by')
                      ->where('product.is_delete', '=', 0)
-                     ->orderby('product.id', 'desc')
-                     ->paginate(50);
+                     ->orderby('product.id', 'desc');
+
+
+                     if(!empty($request->get('title'))) {
+                        $query->where('product.title', 'like', '%'.$request->get('title').'%');
+                    }
+
+                    return $query->paginate(50);
     }
 
     static public function getImageSingle($product_id)
@@ -31,8 +37,8 @@ class ProductModel extends Model
 
     static public function getProduct($category_id ='', $subcategory_id='')
     {
-        $return = self::select('product.*', 'users.name as created_by_name', 'sub_category.name as sub_category_name'
-            , 'category.slug as category_slug', 'sub_category.slug as sub_category_slug')
+        $return = self::select('product.*', 'users.name as created_by_name', 'category.name as category_name'
+            , 'category.slug as category_slug', 'sub_category.name as sub_category_name', 'sub_category.slug as sub_category_slug')
             ->join('users', 'users.id', '=', 'product.created_by')
             ->join('category', 'category.id', '=', 'product.category_id')
             ->join('sub_category', 'sub_category.id', '=', 'product.sub_category_id');
@@ -77,19 +83,44 @@ class ProductModel extends Model
             $return = $return->where('product.price', '<=', $end_price);
         }
 
+        if (!empty(request()->get('q'))) {
+            $return = $return->where('product.title', 'like', '%'.request()->get('q').'%');
+        }
+
         $return = $return->where('product.is_delete', '=', 0)
             ->where('product.status', '=', 0)
-            ->groupby('product.id')
-            ->orderby('product.id', 'desc')
-            ->paginate(2);
+            ->groupBy('product.id')
+            ->orderBy('product.id', 'desc')
+            ->paginate(10);
 
         return $return;
     }
 
 
+    static public function getRelatedProduct($product_id, $sub_category_id)
+    {
+        $return = self::select('product.*', 'users.name as created_by_name', 'sub_category.name as sub_category_name'
+            , 'category.slug as category_slug', 'sub_category.slug as sub_category_slug')
+            ->join('users', 'users.id', '=', 'product.created_by')
+            ->join('category', 'category.id', '=', 'product.category_id')
+            ->join('sub_category', 'sub_category.id', '=', 'product.sub_category_id')
+            ->where('product.id', '!=', $product_id)
+            ->where('product.sub_category_id', '=', $sub_category_id)
+            ->where('product.is_delete', '=', 0)
+            ->where('product.status', '=', 0)
+            ->groupBy('product.id')
+            ->orderBy('product.id', 'desc')
+            ->limit(10)
+            ->get();
+
+        return $return;
+
+    }
+
+
     static public function getSingleSlug($slug){
         return self::where('slug', '=', $slug)
-                        ->where('product.is_delete', '=', 0)
+                     ->where('product.is_delete', '=', 0)
                      ->where('product.status', '=', 0)
                      ->first();
     }

@@ -13,8 +13,11 @@
         <div class="container">
             @if (!empty($getSubCategory))
             <h1 class="page-title">{{ $getSubCategory->name }}</h1>
-            @else
+            @elseif(!empty($getCategory))
                 <h1 class="page-title">{{ $getCategory->name }}</h1>
+
+            @else
+            <h1 class="page-title">Results for: {{ Request::get('q') }}</h1>
             @endif
 
         </div>
@@ -27,7 +30,7 @@
                 @if (!empty($getSubCategory))
                 <li class="breadcrumb-item" aria-current="page"><a href="{{ url($getCategory->slug) }}">{{ $getCategory->name }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ $getSubCategory->name }}</li>
-            @else
+            @elseif(!empty($getCategory))
             <li class="breadcrumb-item active" aria-current="page">{{ $getCategory->name }}</li>
             @endif
 
@@ -74,6 +77,8 @@
                 <aside class="col-lg-3 order-lg-first">
                     <form action="" id="FilterForm" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="q" value="{{ !empty(request()->get('q')) ? request()->get('q') : ''   }}">
+
                         <input type="hidden" name="old_sub_category_id" value="{{ !empty($getSubCategory) ? $getSubCategory->id : ''  }}">
                         <input type="hidden" name="old_category_id" value="{{ !empty($getCategory) ? $getCategory->id : ''  }}">
 
@@ -88,8 +93,11 @@
                     <div class="sidebar sidebar-shop">
                         <div class="widget widget-clean">
                             <label>Filters:</label>
-                            <a href="#" class="sidebar-filter-clear">Clean All</a>
+                            <a href="{{ url('') }}" class="sidebar-filter-clear">Clean All</a>
                         </div>
+
+                        @if (!empty($getSubcategoryFilter))
+
 
                         <div class="widget widget-collapsible">
                             <h3 class="widget-title">
@@ -117,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        @endif
 
                         <div class="widget widget-collapsible">
                             <h3 class="widget-title">

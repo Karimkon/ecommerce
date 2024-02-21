@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>Ecommerce</b> site</a>
+    <a href="#"><b>Ecommerce</b> CRM</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -59,12 +59,12 @@
         </div>
       </form>
 
-      
+
       <p class="mb-1">
         <a href="">I forgot my password</a>
       </p>
       <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
+        <a href="{{ url('/') }}" class="text-center">Main Shop</a>
       </p>
     </div>
     <!-- /.login-card-body -->

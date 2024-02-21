@@ -12,36 +12,36 @@ use App\Models\SubCategoryModel;
 use App\Models\ProductColorModel;
 use App\Models\ProductSizeModel;
 use App\Models\ProductImageModel;
-use Str;
-use Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $data['getRecord'] = ProductModel::getRecord();
+        $data['getRecord'] = ProductModel::getRecord($request);
         $data['header_title'] = "Product  List";
         return view('admin.product.list', $data);
-    } 
+    }
 
     public function add()
     {
         $data['header_title'] = "Add New Products";
         return view('admin.product.add', $data);
-    } 
+    }
 
     public function insert(Request $request)
     {
-        
+
         $title = trim($request->title);
         $product = new ProductModel;
         $product->title = $title;
         $product->created_by = Auth::user()->id;
         $product->save();
-        
+
         $slug = Str::slug($title, "-");
         $checkSlug = ProductModel::checkSlug($slug);
-        if(!empty($checkSlug))
+        if(empty($checkSlug))
         {
             $product->slug = $slug;
             $product->save();
@@ -52,10 +52,10 @@ class ProductController extends Controller
             $product->slug = $new_slug;
             $product->save();
         }
-        
+
 
         return redirect('admin/product/edit/'.$product->id);
-    } 
+    }
 
     public function edit($product_id)
     {
@@ -70,15 +70,17 @@ class ProductController extends Controller
             $data['header_title'] = "Edit Product";
             return view('admin.product.edit', $data);
         }
-        
-    } 
+
+    }
 
     public function update($product_id, Request $request)
     {
+
+
         $product = ProductModel::getSingle($product_id);
         if(!empty($product))
         {
-           
+
             $product->title = trim($request->title);
             $product->sku = trim($request->sku);
             $product->category_id = trim($request->category_id);
@@ -119,7 +121,7 @@ class ProductController extends Controller
                         $saveSize->product_id = $product->id;
                         $saveSize->save();
                     }
-                   
+
 
                 }
             }
@@ -151,7 +153,7 @@ class ProductController extends Controller
         }
         else
         {
-            abort();
+            abort(404);
         }
     }
 
@@ -183,5 +185,15 @@ class ProductController extends Controller
         }
         $json['success'] = true;
         echo json_encode($json);
+    }
+
+
+    public function delete($id)
+    {
+        $product = ProductModel::getSingle($id);
+        $product->is_delete = 1;
+        $product->save();
+
+        return redirect()->back()->with('success', "Sub Category Succesfully deleted.");
     }
 }
