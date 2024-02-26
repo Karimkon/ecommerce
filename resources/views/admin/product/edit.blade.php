@@ -12,7 +12,7 @@
           <div class="col-sm-6">
             <h1>Edit Product</h1>
           </div>
-          
+
         </div>
       </div>
     </section>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6">
 
-                      
+
                   <div class="form-group">
                     <label>SKU <span style="color: red">*</span></label>
                     <input type="text" class="form-control" name="sku" value="{{ old('sku', $product->sku) }}" required placeholder="Enter SKU">
@@ -90,7 +90,7 @@
 
                     </div>
 
-                    
+
                   </div>
 
                   <div class="row">
@@ -99,7 +99,7 @@
 
                       <div class="form-group">
                         <label>Colors<span style="color: red">*</span></label>
-                        
+
                           @foreach ($getColor as $color)
                           @php
                             $checked = '';
@@ -120,12 +120,12 @@
 
                     </div>
 
-                  
+
                 </div>
-                  
+
                 <hr>
-                
-                
+
+
 
                   <div class="row">
 
@@ -154,7 +154,7 @@
                   <div class="row">
 
                     <div class="col-md-12">
-  
+
                       <div class="form-group">
                         <label>Size<span style="color: red">*</span></label>
                         <div>
@@ -162,7 +162,7 @@
                             <thead>
                             <tr>
                               <th>Name</th>
-                              <th>Price($)</th>
+                              <th>Adjusted Price ($)</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -171,8 +171,8 @@
                               $i_s = 1;
                             @endphp
                             @foreach ($product->getSize as $size)
-                              
-                            
+
+
                             <tr id="DeleteSize{{ $i_s }}">
                               <td><input type="text" value="{{ $size->name }}" name="size[{{ $i_s }}][name]" placeholder="name" class="form-control"></td>
                               <td><input type="text" value="{{ $size->price }}" name="size[{{ $i_s }}][price]" placeholder="Price" class="form-control"></td>
@@ -183,7 +183,7 @@
                             @php
                             $i_s ++;
                           @endphp
-                            @endforeach 
+                            @endforeach
 
                             <tr>
                               <td><input type="text" name="size[100][name]" placeholder="name" class="form-control"></td>
@@ -193,15 +193,15 @@
                               </td>
                             </tr>
 
-                            
+
                           </tbody>
                           </table>
                         </div>
                       </div>
-  
+
                     </div>
-  
-                  
+
+
                 </div>
 
                 <hr>
@@ -214,7 +214,7 @@
                       </div>
                   </div>
               </div>
-              
+
               @if (!empty($product->getImage->count()))
                   <div class="row" id="sortable">
                       @foreach ($product->getImage as $image)
@@ -229,7 +229,7 @@
               @endif
               <br>
               <hr>
-              
+
 
                   <div class="row">
 
@@ -244,11 +244,11 @@
 
                     </div>
 
-                  
+
                 </div>
 
 
-                
+
                 <div class="row">
 
                   <div class="col-md-12">
@@ -261,7 +261,7 @@
                     </div>
 
                   </div>
-                
+
               </div>
 
 
@@ -277,7 +277,7 @@
                   </div>
 
                 </div>
-              
+
             </div>
 
 
@@ -293,7 +293,7 @@
                 </div>
 
               </div>
-            
+
           </div>
           <hr />
 
@@ -304,9 +304,9 @@
             <label>Status<span style="color: red">*</span></label>
           <select class="form-control" name="status" id="">
           <option {{ ($product->status == 0) ? 'selected' : '' }} value="0">Active</option>
-          <option {{ ($product->status == 1) ? 'selected' : '' }} value="1">Inactive</option>  
-          </select>               
-          </div> 
+          <option {{ ($product->status == 1) ? 'selected' : '' }} value="1">Inactive</option>
+          </select>
+          </div>
             </div>
           </div>
 
@@ -358,7 +358,7 @@ $(document).ready(function() {
 
       },
       error: function(data) {
-       
+
       }
     });
 
@@ -381,7 +381,7 @@ $('body').delegate('.AddSize', 'click', function() {
               <td>\n\
                 <button type="button" id="'+i+'" class="btn btn-danger DeleteSize">Delete</button>\n\
               </td>\n\
-                </tr>';  
+                </tr>';
                 i++;
               $('#AppendSize').append(html);
 });
@@ -389,7 +389,7 @@ $('body').delegate('.AddSize', 'click', function() {
 $('body').delegate('.DeleteSize', 'click', function() {
   var id = $(this).attr('id');
   $('#DeleteSize'+id).remove();
-}); 
+});
 
   $('body').delegate('#ChangeCategory', 'change', function(e) {
     var id = $(this).val();
@@ -405,7 +405,7 @@ $('body').delegate('.DeleteSize', 'click', function() {
        $('#getSubCategory').html(data.html);
       },
       error: function(data) {
-       
+
       }
     });
   });

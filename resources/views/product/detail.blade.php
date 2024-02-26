@@ -62,18 +62,21 @@
                                     </div>
 
                                     <div class="product-price">
-                                        ${{ number_format($getProduct->price, 2) }}
+                                        $<span id="getTotalPrice">{{ number_format($getProduct->price, 2) }}</span>
                                     </div>
 
                                     <div class="product-content">
                                         <p>{!! $getProduct->short_description !!} </p>
                                     </div>
 
+                                    <form action="{{ url('product/add-to-cart') }}" method="POST">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="product_id" value="{{ $getProduct->id }}">
                                     @if(!empty($getProduct->getColor->count()))
                                     <div class="details-filter-row details-row-size">
                                         <label for="size">Color:</label>
                                         <div class="select-custom">
-                                            <select name="size" id="size" class="form-control">
+                                            <select name="color_id" id="color_id" class="form-control" required>
                                                 <option value="">Select a color</option>
                                                 @foreach ($getProduct->getColor as $color)
                                                     <option value="{{ $color->getColor->id }}">{{ $color->getColor->name }}</option>
@@ -89,11 +92,11 @@
                                     <div class="details-filter-row details-row-size">
                                         <label for="size">Size:</label>
                                         <div class="select-custom">
-                                            <select name="size" id="size" class="form-control">
-                                                <option value="">Select a size</option>
+                                            <select name="size_id" id="size" class="form-control getSizePrice">
+                                                <option data-price="0" value="">Select a size</option>
 
                                                 @foreach ($getProduct->getSize as $size)
-                                            <option value="{{ $size->id }}">{{ $size->name }}
+                                            <option data-price="{{ !empty($size->price) ? $size->price : 0 }}" value="{{ $size->id }}">{{ $size->name }}
                                                 @if(!empty($size->price)) (${{ number_format($size->price, 2) }}) @endif</option>
                                                 @endforeach
                                             </select>
@@ -104,19 +107,19 @@
                                     <div class="details-filter-row details-row-size">
                                         <label for="qty">Qty:</label>
                                         <div class="product-details-quantity">
-                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                            <input type="number" name="qty" id="qty" class="form-control" value="1" min="1" max="100" step="1" data-decimals="0" required>
                                         </div>
                                     </div>
 
                                     <div class="product-details-action">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <button type="submit" class="btn-product btn-cart">Add to cart</button>
 
                                         <div class="details-action-wrapper">
                                             <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
                                            {{-- <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a> --}}
                                         </div>
                                     </div>
-
+                                </form>
                                     <div class="product-details-footer">
                                         <div class="product-cat">
                                             <span>Category:</span>
@@ -263,7 +266,7 @@
                                 }
                             }
                         }'>
-                        
+
                         @foreach ($getRelatedProduct as $value)
                         @php
                         $getProductImage = $value->getImageSingle($value->id);
@@ -312,4 +315,15 @@
     <script src="{{ url('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ url('assets/js/jquery.elevateZoom.min.js') }}"></script>
     <script src="{{ url('assets/js/bootstrap-input-spinner.js') }}"></script>
+
+    <script type="text/javascript">
+        $('.getSizePrice').change(function() {
+            var product_price = '{{ $getProduct->price }}';
+            var price = $('option:selected', this).attr('data-price');
+            var total = parseFloat(product_price) + parseFloat(price);
+            $('#getTotalPrice').html(total.toFixed(2));
+
+        });
+
+</script>
 @endsection
