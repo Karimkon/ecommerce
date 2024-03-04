@@ -92,9 +92,12 @@ Route::group(['middleware' => 'admin'], function () {
 
 Route::get('/', [HomeController::class, 'home']);
 Route::get('cart', [PaymentController::class, 'cart']);
+<<<<<<< HEAD
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
 
 Route::get('cart/delete/{id}', [PaymentController::class, 'cart_delete']);
+=======
+>>>>>>> 6429054ee2b2a04a311007c971bc64fc5d636dc0
 Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
 Route::get('search', [ProductFront::class, 'getProductSearch']);
 Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProductAjax']);
