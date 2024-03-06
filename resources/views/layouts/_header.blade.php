@@ -128,11 +128,7 @@
                                     <div class="product-cart-details">
                                         <h4 class="product-title">
                                             {{ $header_cart->id }}
-<<<<<<< HEAD
                                             <a href="{{ $getCartProduct->slug }}">{{ $getCartProduct->title }}</a>
-=======
-                                            <a href="{{ $header_cart->slug }}">{{ $getCartProduct->title }}</a>
->>>>>>> 6429054ee2b2a04a311007c971bc64fc5d636dc0
                                         </h4>
 
                                         <span class="cart-product-info">
@@ -146,11 +142,7 @@
                                             <img src="{{ $getProductImage->getLogo() }}" alt="product">
                                         </a>
                                     </figure>
-<<<<<<< HEAD
                                     <a href="{{ url('cart/delete/'.$header_cart->id) }}" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-=======
-                                    <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
->>>>>>> 6429054ee2b2a04a311007c971bc64fc5d636dc0
                                 </div>
                                 @endif
                                 @endforeach

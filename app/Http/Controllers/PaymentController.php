@@ -11,9 +11,17 @@ use Cart;
 class PaymentController extends Controller
 {
 
+    public function checkout(Request $request)
+    {
+        $data['meta_title'] = 'Checkout';
+        $data['meta_description'] = '';
+        $data['meta_keywords'] = '';
+
+        return view('payment.checkout', $data);
+    }
+
     public function cart(Request $request)
     {
-<<<<<<< HEAD
         $data['meta_title'] = 'Cart';
         $data['meta_description'] = '';
         $data['meta_keywords'] = '';
@@ -25,9 +33,6 @@ class PaymentController extends Controller
     {
         Cart::remove($id);
         return redirect()->back();
-=======
-        dd(Cart::getContent());
->>>>>>> 6429054ee2b2a04a311007c971bc64fc5d636dc0
     }
 
     public function add_to_cart(Request $request)
@@ -64,7 +69,6 @@ class PaymentController extends Controller
         // You may want to return a response indicating success or failure
         return redirect()->back()->with('status', 'Item added to cart successfully');
     }
-<<<<<<< HEAD
 
     public function update_cart(Request $request)
     {
@@ -80,6 +84,4 @@ class PaymentController extends Controller
           return redirect()->back();
     }
 
-=======
->>>>>>> 6429054ee2b2a04a311007c971bc64fc5d636dc0
 }
