@@ -9,7 +9,7 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-     
+
 
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
@@ -96,8 +96,8 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      
-      
+
+
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -122,7 +122,7 @@
 
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          
+
             <li class="nav-item">
                 <a href="{{ url('admin/dashboard') }}" class="nav-link @if(Request::segment(2) == 'dashboard') active @endif">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -158,7 +158,7 @@
                   </p>
                 </a>
               </li>
-     
+
               <li class="nav-item">
                 <a href="{{ url('admin/brand/list') }}" class="nav-link @if(Request::segment(2) == 'brand') active @endif">
                     <i class="nav-icon fas fa-list-alt"></i>
@@ -185,7 +185,16 @@
                   </p>
                 </a>
               </li>
-     
+
+              <li class="nav-item">
+                <a href="{{ url('admin/discount_code/list') }}" class="nav-link @if(Request::segment(2) == 'discount_code') active @endif">
+                    <i class="nav-icon fas fa-list-alt"></i>
+                  <p>
+                    Discount Code
+                  </p>
+                </a>
+              </li>
+
           <li class="nav-item">
             <a href="{{ url('admin/logout') }}" class="nav-link">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
