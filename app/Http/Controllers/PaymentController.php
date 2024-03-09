@@ -5,11 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProductModel;
 use App\Models\ProductSizeModel;
+use App\Models\DiscountCodeModel;
 use Cart;
-
+use Illuminate\Support\Facades\Response;
 
 class PaymentController extends Controller
 {
+
+    public function apply_discount_code(Request $request)
+    {
+        // Assuming 'discount_code' input is required and is a string
+        $validated = $request->validate([
+            'discount_code' => 'required|string',
+        ]);
+
+        // Attempt to retrieve the discount using the provided code
+        $getDiscount = DiscountCodeModel::CheckDiscount($request->discount_code);
+
+        // Initialize response data array
+        $json = [];
+
+        if (!empty($getDiscount)) {
+            $total = Cart::getSubTotal(); // Retrieve subtotal from the cart
+            if ($getDiscount->type == 'Amount') {
+                // If discount is a fixed amount
+                $discount = $getDiscount->percent_amount;
+                $payable_total = $total - $discount;
+            } else {
+                // If discount is a percentage
+                $discount = ($total * $getDiscount->percent_amount) / 100;
+                $payable_total = $total - $discount;
+            }
+
+            // Populate response data
+            $json['status'] = true;
+            $json['discount'] = number_format($discount, 2);
+            $json['payable_total'] = number_format($payable_total, 2);
+            $json['message'] = "Discount applied successfully.";
+        } else {
+            // Populate response data for invalid discount code
+            $json['status'] = false;
+            $json['discount'] = '0.00';
+            $json['payable_total'] = number_format(Cart::getSubTotal(), 2);
+            $json['message'] = "The discount code you've entered is invalid.";
+        }
+
+        // Return a JSON response with the discount application result
+        return response()->json($json);
+    }
+ 
 
     public function checkout(Request $request)
     {

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-6 col-lg-3">
                     <div class="widget widget-about">
-                        <img src="{{ url('assets/images/logo-footer.png') }}" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                        <img src="{{ url('assets/images/ehan.png') }}" class="footer-logo" alt="Footer Logo" width="155" height="56">
                         <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
 
                         <div class="social-icons">
@@ -23,7 +23,7 @@
 
                         <ul class="widget-list">
                             <li><a href="{{ url('about') }}">About Us</a></li>
-                            <li><a href="#">How to shop on Molla</a></li>
+                            <li><a href="#">How to shop on Ehsan Market</a></li>
                             <li><a href="#">FAQ</a></li>
                             <li><a href="{{ url('contact') }}">Contact us</a></li>
                             <li><a href="{{ url('#signin-modal') }}">Log in</a></li>
@@ -65,9 +65,9 @@
 
     <div class="footer-bottom">
         <div class="container">
-            <p class="footer-copyright">Copyright © 2023 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+            <p class="footer-copyright">Copyright © 2024 Ehsan Market. All Rights Reserved.</p><!-- End .footer-copyright -->
             <figure class="footer-payments">
-                <img src="{{ url('assets/images/payments.png') }}" alt="Payment methods" width="272" height="20">
+                <img src="{{ url('assets/images/ehan.png') }}" alt="Payment methods" width="202" height="20">
             </figure><!-- End .footer-payments -->
         </div><!-- End .container -->
     </div><!-- End .footer-bottom -->

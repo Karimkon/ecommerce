@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>E-COMMERCE  {{ !empty($meta_title) ? $meta_title : '' }}</title>
+    <title>EHSAN MARKET - {{ !empty($meta_title) ? $meta_title : '' }}</title>
 
     @if (!empty($meta_keywords))
     <meta name="description" content="{{ $meta_description }}">
     @endif
-    
+
     @if (!empty($meta_keywords))
     <meta name="keywords" content="{{ $meta_keywords }}">
     @endif
 
- 
-   
-    <link rel="shortcut icon" href="{{ url('assets/images/icons/favicon.ico') }}">
+
+
+    <link rel="shortcut icon" href="{{ url('assets/images/icons/fevicon.ico') }}">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/plugins/owl-carousel/owl.carousel.css') }}">
@@ -25,13 +25,13 @@
     @yield('style')
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    
+
 </head>
 
 <body>
     <div class="page-wrapper">
 
-       
+
         @include('layouts._header')
 
         @yield('content')
@@ -50,7 +50,7 @@
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
     @include('layouts._mobile_menu')
-    
+
 
     <!-- Sign in / Register Modal -->
     <div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -98,7 +98,7 @@
                                             <a href="#" class="forgot-link">Forgot Your Password?</a>
                                         </div><!-- End .form-footer -->
                                     </form>
-                                   
+
                                 </div><!-- .End .tab-pane -->
                                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                                     <form action="#">
@@ -124,7 +124,7 @@
                                             </div><!-- End .custom-checkbox -->
                                         </div><!-- End .form-footer -->
                                     </form>
-                                   
+
                                 </div><!-- .End .tab-pane -->
                             </div><!-- End .tab-content -->
                         </div><!-- End .form-tab -->
@@ -134,7 +134,7 @@
         </div><!-- End .modal-dialog -->
     </div><!-- End .modal -->
 
-<!-- 
+<!--
     <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
         <div class="row justify-content-center">
             <div class="col-10">
@@ -143,7 +143,7 @@
                         <div class="banner-content text-center">
                             <img src="assets/images/popup/newsletter/logo.png" class="logo" alt="logo" width="60" height="15">
                             <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
-                            <p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite products.</p>
+                            <p>Subscribe to the Ehsan Market eCommerce newsletter to receive timely updates from your favorite products.</p>
                             <form action="#">
                                 <div class="input-group input-group-round">
                                     <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>

@@ -47,7 +47,7 @@
                 </button>
 
                 <a href="{{ url('') }}" class="logo">
-                    <img src="{{url('assets/images/logo.png')}}" width="105" height="25">
+                    <img src="{{url('assets/images/ehsanlogos.png')}}" width="165" height="55">
                 </a>
 
                 <nav class="main-nav">
@@ -99,7 +99,7 @@
                     <form action="{{ url('search') }}" method="get">
                         <div class="header-search-wrapper">
                             <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search in..."
+                            <input type="search" class="form-control" name="q" id="q" placeholder="Press Enter..."
                             value="{{ !empty(request()->get('q')) ? request()->get('q') : ''   }}"
                             required>
                         </div>
@@ -138,7 +138,7 @@
                                     </div>
 
                                     <figure class="product-image-container">
-                                        <a href="product.html" class="product-image">
+                                        <a href="{{ $getCartProduct->slug }}" class="product-image">
                                             <img src="{{ $getProductImage->getLogo() }}" alt="product">
                                         </a>
                                     </figure>

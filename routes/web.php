@@ -103,6 +103,8 @@ Route::get('/', [HomeController::class, 'home']);
 Route::get('cart', [PaymentController::class, 'cart']);
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
 Route::get('checkout', [PaymentController::class, 'checkout']);
+Route::post('checkout/apply_discount_code', [PaymentController::class, 'apply_discount_code']);
+
 Route::get('cart/delete/{id}', [PaymentController::class, 'cart_delete']);
 Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
 Route::get('search', [ProductFront::class, 'getProductSearch']);
