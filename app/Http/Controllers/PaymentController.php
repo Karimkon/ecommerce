@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductModel;
 use App\Models\ProductSizeModel;
 use App\Models\DiscountCodeModel;
+use App\Models\ShippingChargeModel;
 use Cart;
 use Illuminate\Support\Facades\Response;
 
@@ -40,26 +41,27 @@ class PaymentController extends Controller
             // Populate response data
             $json['status'] = true;
             $json['discount'] = number_format($discount, 2);
-            $json['payable_total'] = number_format($payable_total, 2);
+            $json['payable_total'] = $payable_total;
             $json['message'] = "Discount applied successfully.";
         } else {
             // Populate response data for invalid discount code
             $json['status'] = false;
             $json['discount'] = '0.00';
-            $json['payable_total'] = number_format(Cart::getSubTotal(), 2);
+            $json['payable_total'] = Cart::getSubTotal();
             $json['message'] = "The discount code you've entered is invalid.";
         }
 
         // Return a JSON response with the discount application result
         return response()->json($json);
     }
- 
+
 
     public function checkout(Request $request)
     {
         $data['meta_title'] = 'Checkout';
         $data['meta_description'] = '';
         $data['meta_keywords'] = '';
+        $data['getShipping'] = ShippingChargeModel::getRecordActive();
 
         return view('payment.checkout', $data);
     }

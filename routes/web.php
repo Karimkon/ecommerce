@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DiscountCodeController;
+use App\Http\Controllers\Admin\ShippingChargeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController as ProductFront;
 use App\Http\Controllers\PaymentController;
@@ -96,6 +97,14 @@ Route::group(['middleware' => 'admin'], function () {
       Route::post('admin/discount_code/edit/{id}', [DiscountCodeController::class, 'update']);
       Route::get('admin/discount_code/delete/{id}', [DiscountCodeController::class, 'delete']);
 
+
+      //Shipping Charge
+      Route::get('admin/shipping_charge/list', [ShippingChargeController::class, 'list']);
+      Route::get('admin/shipping_charge/add', [ShippingChargeController::class, 'add']);
+      Route::post('admin/shipping_charge/add', [ShippingChargeController::class, 'insert']);
+      Route::get('admin/shipping_charge/edit/{id}', [ShippingChargeController::class, 'edit']);
+      Route::post('admin/shipping_charge/edit/{id}', [ShippingChargeController::class, 'update']);
+      Route::get('admin/shipping_charge/delete/{id}', [ShippingChargeController::class, 'delete']);
 
 });
 

@@ -5,7 +5,7 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="widget widget-about">
                         <img src="{{ url('assets/images/ehan.png') }}" class="footer-logo" alt="Footer Logo" width="155" height="56">
-                        <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+                        <p>Shope safely on Ehsan market, Ummah's market</p>
 
                         <div class="social-icons">
                             <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
