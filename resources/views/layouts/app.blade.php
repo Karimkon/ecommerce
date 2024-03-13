@@ -73,15 +73,16 @@
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                    <form action="#">
+                                    <form action="" method="POST">
+                                        {{ csrf_field() }}
                                         <div class="form-group">
                                             <label for="singin-email">Username or email address *</label>
-                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                                            <input type="text" class="form-control" name="email" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
                                             <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                            <input type="password" class="form-control" name="password" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-footer">
@@ -91,8 +92,8 @@
                                             </button>
 
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                                <input type="checkbox" class="custom-control-input" name="remember">
+                                                <label class="custom-control-label" for="remember">Remember Me</label>
                                             </div><!-- End .custom-checkbox -->
 
                                             <a href="#" class="forgot-link">Forgot Your Password?</a>
@@ -101,15 +102,21 @@
 
                                 </div><!-- .End .tab-pane -->
                                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                    <form action="#">
+                                    <form action="" id="submitFormRegister" method="POST">
+                                        {{ csrf_field() }}
                                         <div class="form-group">
-                                            <label for="register-email">Your email address *</label>
-                                            <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                            <label for="singin-name">Name <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control" id="singin-name" name="name" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
-                                            <label for="register-password">Password *</label>
-                                            <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                            <label for="singin-email">Username or email address <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control" id="singin-email" name="email" required>
+                                        </div><!-- End .form-group -->
+
+                                        <div class="form-group">
+                                            <label for="singin-password">Password <span style="color: red;">*</span></label>
+                                            <input type="password" class="form-control" id="singin-password" name="password" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-footer">
@@ -149,13 +156,13 @@
                                     <input type="email" class="form-control form-control-white" placeholder="Your Email Address" aria-label="Email Adress" required>
                                     <div class="input-group-append">
                                         <button class="btn" type="submit"><span>go</span></button>
-                                    </div><!-- .End .input-group-append -->
-                                </div><!-- .End .input-group -->
+                                    </div>
+                                </div>
                             </form>
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
                                 <label class="custom-control-label" for="register-policy-2">Do not show this popup again</label>
-                            </div><!-- End .custom-checkbox -->
+                            </div>
                         </div>
                     </div>
                     <div class="col-xl-2-5col col-lg-5 ">
@@ -174,9 +181,34 @@
     <script src="{{ url('assets/js/superfish.min.js') }}"></script>
     <script src="{{ url('assets/js/owl.carousel.min.js') }}"></script>
     <script src="{{ url('assets/js/jquery.magnific-popup.min.js') }}"></script>
+
+    @yield('script')
     <!-- Main JS File -->
     <script src="{{ url('assets/js/main.js') }}"></script>
-    @yield('script')
+
+    <script type="text/javascript">
+    $('body').delegate('#submitFormRegister', 'submit', function(e){
+        e.preventDefault();
+
+        $.ajax({
+                type: "POST",
+                url: "{{ url('auth_register') }}",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(data) {
+                    alert(data.message);
+                    if(data.status == true)
+                    {
+                        location.reload();
+                    }
+                },
+                error: function(data) {
+                    // Handle error
+                }
+            });
+    });
+
+    </script>
 </body>
 
 

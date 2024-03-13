@@ -3,8 +3,8 @@
 @endsection
 
 @section('content')
-   
-   
+
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -16,7 +16,7 @@
           <div class="col-sm-6" style="text-align: right;">
             <a href="{{ url('admin/admin/add') }}" class="btn btn-primary">Add New Admin</a>
           </div>
-          
+
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -24,7 +24,7 @@
     <!-- Main content -->
     <section class="content">
 
-      
+
           <!-- general form elements -->
           <div class="card">
             <div class="card-header">
@@ -35,33 +35,33 @@
                 <div class="row">
                 <div class="form-group col-md-3">
                   <label>Name</label>
-                  <input type="text" class="form-control" name="name" value="{{ Request::get('name') }}" placeholder="Enter Name">
+                  <input type="text" class="form-control" name="name" value="{{ $query->name ?? '' }}" placeholder="Enter Name">
                 </div>
                 <div class="form-group col-md-3">
                   <label>Email address</label>
-                  <input type="text" class="form-control" name="email" value="{{ Request::get('email') }}" placeholder="Enter email">
+                  <input type="text" class="form-control" name="email" value="{{ $query->email ?? '' }}" placeholder="Enter email">
                 </div>
                 <div class="form-group col-md-3">
                   <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
                   <a href="{{ url('admin/admin/list') }}" style="margin-top: 30px" class="btn btn-success">Reset</a>
                 </div>
                 </div>
-               
+
             </div>
             </form>
-          </div>      
+          </div>
 
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
-            
+
             @include('admin.layouts._message')
 
           </div>
           <!-- /.col -->
           <div class="col-md-12">
             <div class="card">
-              
+
               <!-- /.card-header -->
               <div class="card-body p-0">
                 <table class="table">
@@ -93,7 +93,7 @@
                         <a href="{{ url('chat?receiver_id='.base64_encode($value->id)) }}" class="btn btn-success">Send Message</a>
                       </td>
                     </tr>
-                      
+
                     @endforeach
                   </tbody>
                 </table>
@@ -105,7 +105,7 @@
             </div>
             <!-- /.card -->
 
-            
+
           </div>
           <!-- /.col -->
         </div>

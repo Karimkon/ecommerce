@@ -48,24 +48,23 @@ class User extends Authenticatable
         return self::find($id);
     }
 
-    static function getAdmin()
-    {
-        $return = self::select('users.*')
-                            ->where('is_admin','=',1)
-                            ->where('is_delete','=',0);
-                            if(!empty(Request::get('name')))
-                            {
-                                $return = $return ->where('name','like','%'.Request::get('name').'%');
-                            }
-                            if(!empty(Request::get('email')))
-                            {
-                                $return = $return ->where('email','like','%'.Request::get('email').'%');
-                            }
-        $return = $return ->orderBy('id', 'desc')
-        ->paginate(25);
-        return $return;
+    static function getAdmin($name = null, $email = null)
+{
+    $query = self::select('users.*')
+                    ->where('is_admin', '=', 1)
+                    ->where('is_delete', '=', 0);
 
+    if (!empty($name)) {
+        $query->where('name', 'like', '%' . $name . '%');
     }
+
+    if (!empty($email)) {
+        $query->where('email', 'like', '%' . $email . '%');
+    }
+
+    return $query->orderBy('id', 'desc')
+                 ->paginate(25);
+}
 
 public function getProfile()
     {
@@ -88,5 +87,13 @@ public function getProfile()
         {
             return url('upload/profile/user.png');
         }
+    }
+
+    static public function checkEmail($email)
+    {
+        return User::select('users.*')
+        ->where('email','=', $email)
+        ->first();
+
     }
 }

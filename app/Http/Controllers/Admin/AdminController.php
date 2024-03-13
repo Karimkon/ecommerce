@@ -5,21 +5,31 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
+
 use Str;
 class AdminController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $data['getRecord'] = User::getAdmin();
+        $name = $request->input('name');
+        $email = $request->input('email');
+
+        $data['getRecord'] = User::getAdmin($name, $email);
         $data['header_title'] = "Admin List";
+        $data['query'] = (object) [
+            'name' => $name,
+            'email' => $email,
+        ];
+
         return view('admin.admin.list', $data);
-    } 
+    }
+    
     public function add()
     {
         $data['header_title'] = "Add New Admin";
         return view('admin.admin.add', $data);
-    } 
+    }
     public function insert(Request $request)
     {
         request()->validate([
@@ -39,12 +49,12 @@ class AdminController extends Controller
             $file->move('upload/profile/', $filename);
 
             $user->profile_pic = $filename;
-            
+
         }
         $user->save();
 
         return redirect('admin/admin/list')->with('success', "Admin Succesfully created.");
-    } 
+    }
     public function edit($id)
     {
         $data['getRecord'] = User::getSingle($id);
@@ -57,8 +67,8 @@ class AdminController extends Controller
         {
             abort(404);
         }
-        
-    } 
+
+    }
     public function update($id, Request $request)
     {
         request()->validate([
@@ -84,14 +94,14 @@ class AdminController extends Controller
             $file->move('upload/profile/', $filename);
 
             $user->profile_pic = $filename;
-            
+
         }
-        
+
         $user->is_admin = 1;
         $user->save();
 
         return redirect('admin/admin/list')->with('success', "Admin Succesfully updated.");
-    } 
+    }
 
     public function delete($id)
     {
@@ -100,5 +110,5 @@ class AdminController extends Controller
         $user->save();
 
         return redirect('admin/admin/list')->with('success', "Admin Succesfully deleted.");
-    } 
+    }
 }
