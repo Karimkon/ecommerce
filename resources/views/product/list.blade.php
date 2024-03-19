@@ -5,6 +5,34 @@
                 .active-color {
                     border: 3px solid #000 !important;
                 }
+
+                .filter-colors {
+                    display: flex;
+                 }
+
+                .color-wrapper {
+                    position: relative;
+                    margin: 0 2px; /* Adjust the margin to reduce spacing between colors */
+                }
+
+                .color-tooltip {
+                    position: absolute;
+                    top: -30px; /* Adjust the distance above the color */
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background-color: #fff;
+                    padding: 5px 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    display: none; /* Hide tooltip by default */
+                }
+
+                .color-wrapper:hover .color-tooltip {
+                    display: block; /* Show tooltip on hover */
+                }
+
+
             </style>
 @endsection
 @section('content')
@@ -133,17 +161,23 @@
                                     Colors
                                 </a>
                             </h3>
-
                             <div class="collapse show" id="widget-3">
                                 <div class="widget-body">
                                     <div class="filter-colors">
                                         @foreach ($getColor as $f_color)
-                                        <a href="javascript:;" id="{{ $f_color->id }}" class="ChangeColor" data-val="0" style="background: {{ $f_color->code }};"><span class="sr-only">{{ $f_color->name }}</span></a>
+                                        <div class="color-wrapper">
+                                            <a href="javascript:;" id="{{ $f_color->id }}" class="ChangeColor" data-val="0" style="background: {{ $f_color->code }};">
+                                                <span class="sr-only">{{ $f_color->name }}</span>
+                                            </a>
+                                            <div class="color-tooltip">{{ $f_color->name }}</div> <!-- Tooltip -->
+                                        </div>
                                         @endforeach
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="widget widget-collapsible">
                             <h3 class="widget-title">
@@ -202,6 +236,8 @@
     <script src="{{ url('assets/js/wNumb.js') }}"></script>
     <script src="{{ url('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ url('assets/js/nouislider.min.js') }}"></script>
+
+
 
     <script type="text/javascript">
         $('.ChangeSortBy').change(function() {
@@ -354,5 +390,12 @@
 
 		});
 	}
+
+    $(document).ready(function() {
+        // Show tooltip on click (optional)
+        $('.ChangeColor').click(function() {
+            $(this).siblings('.color-tooltip').toggle();
+        });
+    });
     </script>
 @endsection

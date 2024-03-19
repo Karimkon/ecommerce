@@ -30,6 +30,23 @@ class ProductController extends Controller
         return view('admin.product.add', $data);
     }
 
+    private function generateSKU($title)
+    {
+        // Generate SKU
+        $sku = strtoupper(substr($title, 0, 3) . rand(100, 999));
+
+        // Check if the SKU already exists in the database
+        $existingProduct = ProductModel::where('sku', $sku)->first();
+
+        // If SKU already exists, generate a new one until it's unique
+        while ($existingProduct) {
+            $sku = strtoupper(substr($title, 0, 3) . rand(100, 999));
+            $existingProduct = ProductModel::where('sku', $sku)->first();
+        }
+
+        return $sku;
+    }
+
     public function insert(Request $request)
     {
 
@@ -37,6 +54,8 @@ class ProductController extends Controller
         $product = new ProductModel;
         $product->title = $title;
         $product->created_by = Auth::user()->id;
+        // Generate SKU
+        $product->sku = $this->generateSKU($title);
         $product->save();
 
         $slug = Str::slug($title, "-");
@@ -82,7 +101,10 @@ class ProductController extends Controller
         {
 
             $product->title = trim($request->title);
-            $product->sku = trim($request->sku);
+             // Generate SKU if it's empty
+            if(empty($product->sku)) {
+                $product->sku = $this->generateSKU($request->title);
+            }
             $product->category_id = trim($request->category_id);
             $product->sub_category_id = trim($request->sub_category_id);
             $product->brand_id = trim($request->brand_id);

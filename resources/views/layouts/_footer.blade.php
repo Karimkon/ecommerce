@@ -5,15 +5,14 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="widget widget-about">
                         <img src="{{ url('assets/images/ehan.png') }}" class="footer-logo" alt="Footer Logo" width="155" height="56">
-                        <p>Shope safely on Ehsan market, Ummah's market</p>
+                        <p>Shope safely on Ehsan market, The Ummah's market</p>
 
                         <div class="social-icons">
                             <a href="https://www.facebook.com/profile.php?id=61556558141977" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
                             <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
                             <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
                             <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-                        </div><!-- End .soial-icons -->
+                         </div><!-- End .soial-icons -->
                     </div><!-- End .widget about-widget -->
                 </div><!-- End .col-sm-6 col-lg-3 -->
 
@@ -26,8 +25,7 @@
                             <li><a href="#">How to shop on Ehsan Market</a></li>
                             <li><a href="#">FAQ</a></li>
                             <li><a href="{{ url('contact') }}">Contact us</a></li>
-                            <li><a href="{{ url('#signin-modal') }}">Log in</a></li>
-                        </ul><!-- End .widget-list -->
+                         </ul><!-- End .widget-list -->
                     </div><!-- End .widget -->
                 </div><!-- End .col-sm-6 col-lg-3 -->
 
@@ -51,8 +49,8 @@
                         <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
 
                         <ul class="widget-list">
-                            <li><a href="{{ url('#signin-modal') }}">Sign In</a></li>
-                            <li><a href="cart.html">View Cart</a></li>
+                            <li><a href="#" id="footer-signin-link">Sign In</a></li>
+                            <li><a href="{{ url('cart') }}">View Cart</a></li>
                             <li><a href="#">My Wishlist</a></li>
                             <li><a href="#">Track My Order</a></li>
                             <li><a href="#">Help</a></li>
@@ -65,10 +63,17 @@
 
     <div class="footer-bottom">
         <div class="container">
-            <p class="footer-copyright">Copyright © 2024 Ehsan Market. All Rights Reserved.</p><!-- End .footer-copyright -->
+            <p class="footer-copyright">Copyright © <span id="current-year"></span> Ehsan Market. All Rights Reserved.</p><!-- End .footer-copyright -->
             <figure class="footer-payments">
                 <img src="{{ url('assets/images/ehan.png') }}" alt="Payment methods" width="202" height="20">
             </figure><!-- End .footer-payments -->
         </div><!-- End .container -->
     </div><!-- End .footer-bottom -->
 </footer>
+<script>
+    // Get the current year
+    var currentYear = new Date().getFullYear();
+
+    // Set the current year in the footer copyright notice
+    document.getElementById('current-year').textContent = currentYear;
+</script>

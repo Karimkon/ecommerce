@@ -110,6 +110,11 @@ Route::group(['middleware' => 'admin'], function () {
 
 Route::get('/', [HomeController::class, 'home']);
 Route::post('auth_register', [AuthController::class, 'auth_register']);
+Route::post('auth_login', [AuthController::class, 'auth_login']);
+Route::get('forgot-password', [AuthController::class, 'forgot_password']);
+Route::post('forgot-password', [AuthController::class, 'auth_forgot_password']);
+Route::get('reset/{token}', [AuthController::class, 'reset']);
+Route::post('reset/{token}', [AuthController::class, 'auth_reset']);
 Route::get('activate/{id}', [AuthController::class, 'activate_email']);
 Route::post('login', [AuthController::class, 'login_user']);
 
@@ -117,6 +122,8 @@ Route::get('cart', [PaymentController::class, 'cart']);
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
 Route::get('checkout', [PaymentController::class, 'checkout']);
 Route::post('checkout/apply_discount_code', [PaymentController::class, 'apply_discount_code']);
+Route::post('checkout/place_order', [PaymentController::class, 'place_order']);
+
 
 Route::get('cart/delete/{id}', [PaymentController::class, 'cart_delete']);
 Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);

@@ -68,7 +68,7 @@
                                     <td class="price-col">${{ number_format($cart->price, 2) }}</td>
                                     <td class="quantity-col">
                                         <div class="cart-product-quantity">
-                                            <input type="number" class="form-control" value="{{ $cart->quantity }}" min="1" name="cart[{{ $key }}][qty]" max="400" step="1" data-decimals="0" required>
+                                            <input type="number" class="form-control" value="{{ $cart->quantity }}" min="1" name="cart[{{ $key }}][qty]" max="10000" step="1" data-decimals="0" required>
 
                                             <input type="hidden" value="{{ $cart->id }}" name="cart[{{ $key }}][id]">
 
@@ -84,7 +84,7 @@
                         </table>
 
                         <div class="cart-bottom">
-                            
+
 
                             <button type="submit" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></button>
                         </div>

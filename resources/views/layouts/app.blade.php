@@ -73,16 +73,16 @@
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                    <form action="" method="POST">
+                                    <form action="" id="submitFormLogin" method="POST">
                                         {{ csrf_field() }}
                                         <div class="form-group">
-                                            <label for="singin-email">Username or email address *</label>
-                                            <input type="text" class="form-control" name="email" required>
+                                            <label for="singin-email" >Email address *</label>
+                                            <input type="text" class="form-control" id="singin-email" name="email" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
                                             <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" name="password" required>
+                                            <input type="password" id="singin-password" class="form-control" name="password" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-footer">
@@ -92,11 +92,11 @@
                                             </button>
 
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" name="remember">
-                                                <label class="custom-control-label" for="remember">Remember Me</label>
+                                                <input type="checkbox" class="custom-control-input" id="signin-remember" name="is_remember">
+                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
                                             </div><!-- End .custom-checkbox -->
 
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                            <a href="{{ url('forgot-password') }}" class="forgot-link">Forgot Your Password?</a>
                                         </div><!-- End .form-footer -->
                                     </form>
 
@@ -187,6 +187,32 @@
     <script src="{{ url('assets/js/main.js') }}"></script>
 
     <script type="text/javascript">
+
+    $('body').delegate('#submitFormLogin', 'submit', function(e){
+        e.preventDefault();
+
+        $.ajax({
+                type: "POST",
+                url: "{{ url('auth_login') }}",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(data) {
+
+                    if(data.status == true)
+                    {
+                        location.reload();
+                    }
+                    else
+                    {
+                        alert(data.message);
+                    }
+                },
+                error: function(data) {
+                    // Handle error
+                }
+            });
+    });
+
     $('body').delegate('#submitFormRegister', 'submit', function(e){
         e.preventDefault();
 
@@ -209,6 +235,35 @@
     });
 
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get a reference to the sign-in link in the footer
+        var footerSigninLink = document.getElementById('footer-signin-link');
+
+        // Get a reference to the sign-up link in the header/cta section
+        var headerSignupLink = document.getElementById('header-signup-link');
+
+        // Get a reference to the sign-in modal
+        var signinModal = document.getElementById('signin-modal');
+
+        // Function to show the sign-in modal
+        function showSigninModal(event) {
+            // Prevent the default link behavior
+            event.preventDefault();
+
+            // Show the sign-in modal
+            $(signinModal).modal('show');
+        }
+
+        // Add click event listener to the sign-in link in the footer
+        footerSigninLink.addEventListener('click', showSigninModal);
+
+        // Add click event listener to the sign-up link in the header/cta section
+        headerSignupLink.addEventListener('click', showSigninModal);
+    });
+</script>
+
 </body>
 
 

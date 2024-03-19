@@ -11,7 +11,7 @@
           <div class="col-sm-6">
             <h1>Add New Product</h1>
           </div>
-          
+
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -32,7 +32,7 @@
                     <input type="text" class="form-control" name="title" value="{{ old('title') }}" required placeholder="Enter Category Name">
                   </div>
 
-                  
+
                 </div>
                 <!-- /.card-body -->
 
