@@ -8,8 +8,8 @@
 Verify
  @endcomponent
 
-    <p>Thank you for joining {{ config('app.name') }}. If you have any questions or need assistance, feel free to contact our support team.</p>
+    Thank you for joining {{ config('app.name') }}. If you have any questions or need assistance, feel free to contact our support team.
 
-    <p>Best regards,<br>
-        {{ config('app.name') }} Team</p>
+    Best regards,
+        {{ config('app.name') }} Team
 @endcomponent

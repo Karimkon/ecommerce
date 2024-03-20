@@ -83,7 +83,7 @@ class AuthController extends Controller
             Mail::to($save->email)->send(new RegisterMail($save));
 
             $json['status'] = true;
-            $json['message'] = "You have successfully created your account, please login";
+            $json['message'] = "You have successfully created your account, please verify your E-mail and Login";
         }
         else
         {
@@ -96,14 +96,20 @@ class AuthController extends Controller
     }
 
     public function activate_email($id)
-    {
-        $id = base64_decode($id);
-        $user = User::getSingle($id);
+{
+    $id = base64_decode($id);
+    $user = User::getSingle($id);
+
+    if ($user) {
         $user->email_verified_at = date('Y-m-d H:i:s');
         $user->save();
-
         return redirect(url(''))->with('success', "Email Successfully Verified");
+    } else {
+        // Handle case where user is not found
+        return redirect(url(''))->with('error', "User not found or invalid activation link");
     }
+}
+
 
     public function forgot_password(Request $request)
     {
@@ -120,7 +126,7 @@ class AuthController extends Controller
             $user->save();
 
             Mail::to($user->email)->send(new ForgotPasswordMail($user));
-            return redirect()->back()->with("success", 'Check Your Inbox 📩 for new password reset');
+            return redirect()->back()->with("success", 'Check Your Inbox 📩 for a new password reset');
         }
         else
         {
