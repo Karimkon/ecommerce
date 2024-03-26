@@ -1,6 +1,23 @@
 @extends('layouts.app')
 @section('style')
+<style type="text/css">
+.shipping-description-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    max-width: 300px; /* Adjust as needed */
+    text-align: center;
+}
 
+
+</style>
 @endsection
 @section('content')
 
@@ -10,6 +27,18 @@
             <h1 class="page-title">Checkout<span>Shop</span></h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
+    <center>
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+</center>
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
@@ -24,7 +53,7 @@
         <div class="checkout">
             <div class="container">
 
-                <form action="{{ url('checkout/place_order') }}" method="POST">
+                <form action="" id="SubmitForm" method="POST">
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-lg-9">
@@ -78,10 +107,18 @@
                                 <label>Email address *</label>
                                 <input type="email" name="email" class="form-control" required>
 
+                                @if(empty(Auth::check()))
+
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                                    <input type="checkbox" name="is_create" class="custom-control-input CreateAccount" id="checkout-create-acc">
                                     <label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
                                 </div><!-- End .custom-checkbox -->
+
+                                <div id="ShowPassword" style="display: none;">
+                                    <label>Password *</label>
+                                    <input type="text" id="inputPassword" name="password" class="form-control">
+                                </div>
+                                @endif
 
                                 <label>Order notes (optional)</label>
                                 <textarea class="form-control" name="note" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
@@ -139,32 +176,39 @@
                                         </tr><!-- End .summary-subtotal -->
 
                                         <tr class="summary-shipping">
-                                            <td>Shipping:</td>
+                                            <td>Shipping Packages:</td>
                                             <td>&nbsp;</td>
                                         </tr>
 
-                                         @foreach ($getShipping as $shipping)
-
-                                        <tr class="summary-shipping-row">
+                                        @foreach ($getShipping as $key => $shipping)
+                                        <tr class="summary-shipping-row" @if($key > 1) style="display:none;" @endif>
                                             <td>
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" value="{{$shipping->id}}" id="free-shipping{{$shipping->id}}" name="shipping"
-                                                   required data-price="{{ !empty($shipping->price) ? $shipping->price : 0}}" class="custom-control-input getShippingCharge">
+                                                    required data-price="{{ !empty($shipping->price) ? $shipping->price : 0}}" class="custom-control-input getShippingCharge">
                                                     <label class="custom-control-label" for="free-shipping{{$shipping->id}}">{{$shipping->name}}</label>
                                                 </div><!-- End .custom-control -->
                                             </td>
                                             <td>
-                                                @if (!empty($shipping->name))
-                                                ${{ number_format($shipping->price, 2) }}
+                                                @if (!empty($shipping->price))
+                                                    ${{ number_format($shipping->price, 2) }}
+                                                @endif
+                                                @if (!empty($shipping->description))
+                                                    <div class="shipping-description" style="display: none;">{{ $shipping->description }}</div>
                                                 @endif
                                             </td>
                                         </tr><!-- End .summary-shipping-row -->
+                                    @endforeach
 
-                                        @endforeach
+                <tr class="more-options">
+                    <td colspan="2">
+                        <button type="button" class="more-btn">More Options</button>
+                    </td>
+                </tr>
 
                                         <tr>
-                                            <td>Shipping:</td>
-                                            <td>Free shipping</td>
+                                            <td>Shipping charge:</td>
+                                            <td>$<span id="selectedShippingAmount">0.00</span></td>
                                         </tr>
                                         <tr class="summary-total">
                                             <td> Total:</td>
@@ -214,43 +258,128 @@
 @section('script')
 <script src="{{ url('assets/js/jquery.min.js') }}"></script>
 
- <script type="text/javascript">
+<script type="text/javascript">
 
-$('body').delegate('.getShippingCharge', 'change', function(){
-    var price = $(this).attr('data-price');
-    var total = $('#PayableTotal').val();
-    $('#getShippingChargeTotal').val(price);
-    var final_total = parseFloat(price) + parseFloat(total);
-    $('#getPayableTotal').html(final_total.toFixed(2));
+    var discountApplied = false; // Flag to track if discount has been applied
 
-});
-     $('body').delegate('#ApplyDiscount', 'click', function(){
-            var discount_code = $('#getDiscountCode').val();
+    $(document).on('change', '.CreateAccount', function(){
+        if(this.checked)
+        {
+            $('#ShowPassword').show();
+            $('#inputPassword').prop('required',true);
+        }
+        else
+        {
+            $('#ShowPassword').hide();
+            $('#inputPassword').prop('required',false);
+        }
 
-            $.ajax({
-                type: "POST",
-                url: "{{ url('checkout/apply_discount_code') }}",
-                data: {
-                    discount_code : discount_code,
-                    "_token" : "{{ csrf_token() }}",
-                },
-                dataType: "json",
-                success: function(data) {
-                    $('#getDiscountAmount').html(data.discount_code);
-                    var shipping = $('#getShippingChargeTotal').val();
-                    var final_total = parseFloat(shipping) + parseFloat(data.payable_total);
-                    $('#getPayableTotal').html(final_total.toFixed(2));
-                    $('#PayableTotal').html(data.payable_total.toFixed(2));
-                    if(data.status == false)
-                    {
-                        alert(data.message);
-                    }
+    });
 
-                },
-                error: function(data) {
-                    // Handle error
+    $(document).on('submit', '#SubmitForm', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{{ url('checkout/place_order') }}",
+            data: new FormData(this),
+            processData:false,
+            contentType:false,
+            dataType: "json",
+            success: function(data){
+                if(data.status == false)
+                {
+                    alert(data.message);
                 }
+
+            },
+            error: function(data){
+
+            }
+        });
+    });
+
+    $(document).on('change', '.getShippingCharge', function(){
+        var price = $(this).attr('data-price');
+        var total = parseFloat($('#PayableTotal').val());
+        var shippingTotal = parseFloat($('#getShippingChargeTotal').val());
+        var discount = parseFloat($('#getDiscountAmount').html());
+        $('#selectedShippingAmount').text(parseFloat(price).toFixed(2));
+
+
+        var final_total = total - shippingTotal + parseFloat(price); // Calculate total by adding product price and shipping cost
+        $('#getPayableTotal').html(final_total.toFixed(2));
+    });
+
+    $(document).on('click', '#ApplyDiscount', function(){
+        if (discountApplied) {
+            alert("Discount has already been applied.");
+            return;
+        }
+
+        var discount_code = $('#getDiscountCode').val();
+
+        $.ajax({
+            type: "POST",
+            url: "{{ url('checkout/apply_discount_code') }}",
+            data: {
+                discount_code : discount_code,
+                "_token" : "{{ csrf_token() }}",
+            },
+            dataType: "json",
+            success: function(data) {
+                if(data.status == true) {
+                    $('#getDiscountAmount').html(data.discount); // Update discount amount
+
+                    var subtotal = parseFloat($('#PayableTotal').val());
+                    var shippingTotal = parseFloat($('#getShippingChargeTotal').val());
+                    var total = subtotal + shippingTotal; // Calculate total without discount
+                    var final_total = total - data.discount; // Apply discount to total
+
+                    $('#getPayableTotal').html(final_total.toFixed(2));
+                    $('#PayableTotal').val(final_total.toFixed(2));
+
+                    discountApplied = true; // Set flag to true indicating discount has been applied
+                } else {
+                    // Display error message for invalid discount code
+                    alert(data.message);
+                    // Optionally, you can clear the discount amount here if needed
+                    $('#getDiscountAmount').html('0.00');
+                }
+            },
+            error: function(data) {
+                // Handle error
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $(document).on({
+            mouseenter: function () {
+                var description = $(this).find('.shipping-description').html();
+                $('<div class="shipping-description-popup">' + description + '</div>').appendTo('body').fadeIn();
+            },
+            mouseleave: function () {
+                $('.shipping-description-popup').remove();
+            }
+        }, '.summary-shipping-row');
+
+        $('.more-btn').click(function(e){
+            e.preventDefault(); // Prevent default button behavior (form submission)
+
+            var allOptionsDisplayed = $('.summary-shipping-row').length <= 3;
+
+            if (allOptionsDisplayed) {
+                // Change the text of the button to "Less Options"
+                $(this).text("Less Options");
+            }
+
+            $('.summary-shipping-row:gt(2)').toggle(); // Show/hide additional shipping options beyond the third row
+
+            // Toggle the text of the button
+            $(this).text(function(i, text){
+                return text === "More Options" ? "Less Options" : "More Options";
             });
         });
- </script>
+    });
+</script>
 @endsection

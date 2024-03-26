@@ -28,6 +28,7 @@ class ShippingChargeController extends Controller
 
         $shipping_charge = new ShippingChargeModel;
         $shipping_charge->name = trim($request->name);
+        $shipping_charge->description = trim($request->description);
         $shipping_charge->price = trim($request->price);
         $shipping_charge->status = trim($request->status);
         $shipping_charge->save();
@@ -53,6 +54,7 @@ class ShippingChargeController extends Controller
     {
         $shipping_charge = ShippingChargeModel::getSingle($id);
         $shipping_charge->name = trim($request->name);
+        $shipping_charge->description = trim($request->description);
         $shipping_charge->price = trim($request->price);
         $shipping_charge->status = trim($request->status);
         $shipping_charge->save();

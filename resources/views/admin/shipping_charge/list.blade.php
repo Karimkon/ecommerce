@@ -66,6 +66,7 @@
                     <tr>
                       <th>#</th>
                        <th>Name</th>
+                       <th>Description</th>
                        <th>Amount</th>
                        <th>Status</th>
                       <th>Created Date</th>
@@ -77,6 +78,7 @@
                      <tr>
                       <td>{{ $value->id }}</td>
                       <td>{{ $value->name }}</td>
+                      <td>{{ $value->description }}</td>
                      <td>{{ $value->price }}</td>
                      <td>{{ ($value->status == 0) ? 'Active' : 'Inactive'  }}</td>
                       <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>

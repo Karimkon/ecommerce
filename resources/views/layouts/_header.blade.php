@@ -26,7 +26,7 @@
                     <li>
                         <a href="#">Links</a>
                         <ul>
-                            <li><a href="tel:#"><i class="icon-phone"></i>Call: 0707 208 954</a></li>
+                            <li><a href="tel:#"><i class="icon-phone"></i><strong>Call: 0707 208 954</strong></a></li>
                             <li><a href="{{ url('wishlist') }}"><i class="icon-heart-o"></i>My Wishlist <span>(3)</span></a></li>
                             <li><a href="{{ url('about') }}">About Us</a></li>
                             <li><a href="{{ url('contact') }}">Contact Us</a></li>

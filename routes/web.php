@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ShippingChargeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController as ProductFront;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -130,4 +131,7 @@ Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
 Route::get('search', [ProductFront::class, 'getProductSearch']);
 Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProductAjax']);
 Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getCategory']);
+
+Route::get('nav/about', [PageController::class, 'about']);
+
 

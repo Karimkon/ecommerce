@@ -55,10 +55,7 @@
                                     <h1 class="product-title">{{ $getProduct->title }}</h1>
 
                                     <div class="ratings-container">
-                                        <div class="ratings">
-                                            <div class="ratings-val" style="width: 80%;"></div>
-                                        </div>
-                                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+
                                     </div>
 
                                     <div class="product-price">
@@ -155,9 +152,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
                             </li>
+                            <!--
                             <li class="nav-item">
                                 <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
                             </li>
+                        -->
                         </ul>
                     </div>
 
@@ -181,7 +180,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                     <!--   <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
                             <div class="reviews">
                                 <div class="container">
                                     <h3>Reviews (2)</h3>
@@ -211,33 +210,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="review">
-                                        <div class="row no-gutters">
-                                            <div class="col-auto">
-                                                <h4><a href="#">John Doe</a></h4>
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 100%;"></div>
-                                                    </div>
-                                                </div>
-                                                <span class="review-date">5 days ago</span>
-                                            </div>
-                                            <div class="col">
-                                                <h4>Very good</h4>
-
-                                                <div class="review-content">
-                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
-                                                </div>
-
-                                                <div class="review-action">
-                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
-                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                    </div>
                 </div>
-
+-->
                 <div class="container">
                     <h2 class="title text-center mb-4">You May Also Like</h2>
                     <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
@@ -294,12 +268,7 @@
                                 <div class="product-price">
                                     ${{ number_format($value->price, 2) }}
                                 </div>
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: 20%;"></div>
-                                    </div>
-                                    <span class="ratings-text">( 2 Reviews )</span>
-                                </div>
+                               
                             </div>
                         </div>
 

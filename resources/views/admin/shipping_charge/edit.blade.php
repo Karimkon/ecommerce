@@ -32,6 +32,10 @@
                     <input type="text" class="form-control" name="name" value="{{ old('name', $getRecord->name) }}" required placeholder="Enter Name">
                   </div>
 
+                  <div class="form-group">
+                    <label> Description <span style="color: red">*</span></label>
+                    <input type="text" class="form-control" name="description" value="{{ old('description', $getRecord->description) }}" required placeholder="Modify Description">
+                  </div>
 
                   <div class="form-group">
                     <label> Amount <span style="color: red">*</span></label>

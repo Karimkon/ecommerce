@@ -11,7 +11,11 @@ use App\Models\OrderItemModel;
 use App\Models\OrderModel;
 use App\Models\ColorModel;
 use Cart;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -33,17 +37,17 @@ class PaymentController extends Controller
             $total = Cart::getSubTotal(); // Retrieve subtotal from the cart
             if ($getDiscount->type == 'Amount') {
                 // If discount is a fixed amount
-                $discount = $getDiscount->percent_amount;
-                $payable_total = $total - $discount;
+                $discount_amount = $getDiscount->percent_amount;
+                $payable_total = $total - $discount_amount;
             } else {
                 // If discount is a percentage
-                $discount = ($total * $getDiscount->percent_amount) / 100;
-                $payable_total = $total - $discount;
+                $discount_amount = ($total * $getDiscount->percent_amount) / 100;
+                $payable_total = $total - $discount_amount;
             }
 
             // Populate response data
             $json['status'] = true;
-            $json['discount'] = number_format($discount, 2);
+            $json['discount'] = number_format($discount_amount, 2);
             $json['payable_total'] = $payable_total;
             $json['message'] = "Discount applied successfully.";
         } else {
@@ -134,8 +138,70 @@ class PaymentController extends Controller
     }
 
     public function place_order(Request $request)
+{
+    $validate = 0;
+    $message = '';
+    if(!empty(Auth::check()))
     {
+        $user_id = Auth::user()->id;
+    }
+    else
+    {
+    if(!empty($request->is_create))
+    {
+        $checkEmail = User::checkEmail($request->email);
+        if(!empty($checkEmail))
+        {
+            $message = "Hi, Assalam alaikum, this emails is already taken, please try again with another email, thank you 😊";
+            $validate = 1;
+        }
+        else
+        {
+            $save = new User;
+            $save->name = trim($request->first_name);
+            $save->email = trim($request->email);
+            $save->password = Hash::make($request->password);
+            $save->save();
+            $user_id = $save->id;
+        }
+    }
+    else
+    {
+        $user_id = '';
+    }
+    }
+    if(empty($validate))
+    {
+    try {
+        $getShipping = ShippingChargeModel::getSingle($request->shipping);
+        $payable_total = Cart::getSubTotal();
+        $discount_amount = 0;
+        $discount_code = '';
+
+        if (!empty($request->discount_code)) {
+            $getDiscount = DiscountCodeModel::CheckDiscount($request->discount_code);
+            if (!empty($getDiscount)) {
+                $discount_code = $request->discount_code;
+                if ($getDiscount->type == 'Amount') {
+                    // If discount is a fixed amount
+                    $discount_amount = $getDiscount->percent_amount;
+                    $payable_total -= $discount_amount; // Subtract discount amount
+                } else {
+                    // If discount is a percentage
+                    $discount_amount = ($payable_total * $getDiscount->percent_amount) / 100;
+                    $payable_total -= $discount_amount; // Subtract discount amount
+                }
+            }
+        }
+
+        $shipping_amount = !empty($getShipping->price) ? $getShipping->price : 0;
+        $payable_total += $shipping_amount; // Add shipping amount to the discounted total
+
         $order = new OrderModel;
+        if(!empty($user_id))
+        {
+            $order->user_id = trim($user_id);
+        }
         $order->first_name = trim($request->first_name);
         $order->last_name = trim($request->last_name);
         $order->company_name = trim($request->company_name);
@@ -148,15 +214,15 @@ class PaymentController extends Controller
         $order->phone = trim($request->phone);
         $order->email = trim($request->email);
         $order->note = trim($request->note);
-        $order->discount_code = trim($request->discount_code);
+        $order->discount_amount = trim($discount_amount);
+        $order->discount_code = trim($discount_code);
         $order->shipping_id = trim($request->shipping);
+        $order->shipping_amount = trim($shipping_amount);
+        $order->total_amount = trim($payable_total); // Use the updated payable total
         $order->payment_method = trim($request->payment_method);
         $order->save();
 
-        foreach (Cart::getContent() as $key => $cart)
-        {
-
-
+        foreach (Cart::getContent() as $key => $cart) {
             $order_item = new OrderItemModel;
             $order_item->order_id = $order->id;
             $order_item->product_id = $cart->id;
@@ -165,17 +231,14 @@ class PaymentController extends Controller
 
             $color_id = $cart->attributes->color_id;
 
-
-            if(!empty($color_id))
-            {
+            if (!empty($color_id)) {
                 $getColor = ColorModel::getSingle($color_id);
                 $order_item->color_name = $getColor->name;
-             }
+            }
 
             $size_id = $cart->attributes->size_id;
 
-            if(!empty($size_id))
-            {
+            if (!empty($size_id)) {
                 $getSize = ProductSizeModel::getSingle($size_id);
                 $order_item->size_name = $getSize->name;
                 $order_item->size_amount = $getSize->price;
@@ -183,8 +246,27 @@ class PaymentController extends Controller
 
             $order_item->total_price = $cart->price;
             $order_item->save();
-
         }
 
+        // Clear the cart after placing the order
+        Cart::clear();
+        // Store a flag in the session to indicate that the order was placed successfully
+        Session::flash('order_placed', true);
+
+         // Redirect back to the checkout page with a success message
+         return redirect()->back()->with('success', 'Your order has been successfully placed. We will contact you soon.');
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during order placement
+            return redirect()->back()->with('error', 'An error occurred while processing your order. Please try again later.');
+        }
+    } else {
+        // Return JSON response for validation errors
+        return response()->json([
+            'status' => false,
+            'message' => $message,
+        ]);
     }
+}
+
+
 }
